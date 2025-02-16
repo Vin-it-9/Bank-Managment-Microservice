@@ -1,4 +1,4 @@
-package org.inventoryservice;
+package org.LoanService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

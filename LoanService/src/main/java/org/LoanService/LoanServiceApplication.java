@@ -1,4 +1,4 @@
-package org.inventoryservice;
+package org.LoanService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,10 +9,10 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class InventoryServiceApplication {
+public class LoanServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(InventoryServiceApplication.class, args);
+        SpringApplication.run(LoanServiceApplication.class, args);
 
         System.out.println("API Gateway Application Started");
         System.out.println("http://localhost:8092/");

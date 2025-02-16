@@ -19,14 +19,14 @@ spring:
         - id: AccountService
           uri: lb://AccountService
           predicates:
-            - Path=/product/**
+            - Path=/Account/**
 
         - id: TransactionService
           uri: lb://TransactionService
           predicates:
-            - Path=/order/**
+            - Path=/Transaction/**
 
         - id: LoanService
           uri: lb://LoanService
           predicates:
-            - Path=/order/**
+            - Path=/Loan/**
