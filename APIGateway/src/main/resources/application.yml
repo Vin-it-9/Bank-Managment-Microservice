@@ -1,0 +1,32 @@
+server:
+  port: 8999
+
+spring:
+  application:
+   name: ApiGateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+
+        - id: UserService
+          uri: lb://UserService
+          predicates:
+            - Path=/user/**
+
+        - id: AccountService
+          uri: lb://AccountService
+          predicates:
+            - Path=/product/**
+
+        - id: TransactionService
+          uri: lb://TransactionService
+          predicates:
+            - Path=/order/**
+
+        - id: LoanService
+          uri: lb://LoanService
+          predicates:
+            - Path=/order/**
