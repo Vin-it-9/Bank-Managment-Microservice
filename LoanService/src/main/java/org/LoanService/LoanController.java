@@ -36,6 +36,12 @@ public class LoanController {
         return ResponseEntity.ok(updatedLoan);
     }
 
+    @GetMapping("/{loanId}/repayment")
+    public ResponseEntity<Double> getRepaymentAmount(@PathVariable Integer loanId) {
+        Double repaymentAmount = loanService.calculateAndUpdateRepaymentAmount(loanId);
+        return ResponseEntity.ok(repaymentAmount);
+    }
+
 
 
 

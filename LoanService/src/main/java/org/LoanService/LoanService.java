@@ -104,6 +104,19 @@ public class LoanService {
         return loanRepository.save(loan);
     }
 
+    public Double calculateAndUpdateRepaymentAmount(Integer loanId) {
+
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new LoanNotFoundException("Loan not found with id: " + loanId));
+
+        double totalRepayment = LoanCalculator.calculateTotalRepayment(loan);
+
+        loan.setRepaymentAmount(totalRepayment);
+        loanRepository.save(loan);
+
+        return totalRepayment;
+    }
+
 
 
 

@@ -30,9 +30,21 @@ public class Loan {
 
     private Double duration;
 
+    private Double repaymentAmount;
+
+    public Double getRepaymentAmount() {
+        return repaymentAmount;
+    }
+
+    public void setRepaymentAmount(Double repaymentAmount) {
+        this.repaymentAmount = repaymentAmount;
+    }
+
     @PrePersist
     public void prePersist(){
         if(this.amount == null) this.amount = 0.0;
+        if(this.startDate == null) this.startDate = LocalDateTime.now();
+        if(this.interestRate == null) this.interestRate = 5.5;
     }
 
     public boolean isApproved() {
