@@ -61,9 +61,6 @@ public class TransactionService {
 
     }
 
-//    public List<Transaction> getTransactionsBySenderAccountId(Integer senderAccountId) {
-//        return transactionRepository
-//    }
 
     public List<Transaction> getTransactionsByAccountId(Integer accountId) {
         List<Transaction> transactions = transactionRepository.findBySenderAccountIdOrReceiverAccountId(accountId, accountId);
@@ -74,6 +71,23 @@ public class TransactionService {
         return transactions;
     }
 
+    // Fetch only sent transactions
+    public List<Transaction> getSentTransactionsByAccountId(Integer accountId) {
+        List<Transaction> transactions = transactionRepository.findBySenderAccountId(accountId);
+        if (transactions.isEmpty()) {
+            throw new TransactionNotFoundException("No sent transactions found for account ID: " + accountId);
+        }
+        return transactions;
+    }
+
+    // Fetch only received transactions
+    public List<Transaction> getReceivedTransactionsByAccountId(Integer accountId) {
+        List<Transaction> transactions = transactionRepository.findByReceiverAccountId(accountId);
+        if (transactions.isEmpty()) {
+            throw new TransactionNotFoundException("No received transactions found for account ID: " + accountId);
+        }
+        return transactions;
+    }
 
 
 }
