@@ -83,6 +83,26 @@ public class AccountService {
         return account;
     }
 
+    public Account getAccountbalanceForUser(Integer userId, Integer accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found with id: " + accountId));
+        if (!account.getUserId().equals(userId)) {
+            throw new UnauthorizedAccessException("User with id " + userId + " is not authorized to access this account");
+        }
+        return account;
+    }
+
+    public AccountBalanceDto getAccountBalanceForUser(Integer userId, Integer accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found with id: " + accountId));
+        if (!account.getUserId().equals(userId)) {
+            throw new UnauthorizedAccessException("User with id " + userId + " is not authorized to access this account");
+        }
+        return new AccountBalanceDto(account.getBalance());
+    }
+
+
+
 
 
 

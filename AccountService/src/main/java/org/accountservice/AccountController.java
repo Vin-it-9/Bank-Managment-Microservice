@@ -41,6 +41,13 @@ public class AccountController {
         accountService.deleteAccountById(accountId);
     }
 
+    @GetMapping("/user/{userId}/{accountId}/balance")
+    public AccountBalanceDto getAccountBalanceForUser(@PathVariable Integer userId, @PathVariable Integer accountId) {
+        return accountService.getAccountBalanceForUser(userId, accountId);
+    }
+
+
+
 
 
 
