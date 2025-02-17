@@ -14,4 +14,11 @@ public interface AccountServiceClient {
     AccountDto getAccountById(@PathVariable("accountId") Integer accountId);
 
 
+    @PutMapping("/{accountId}/deduct/{amount}")
+    void deductBalance(@PathVariable Integer accountId, @PathVariable Double amount);
+
+    @PutMapping("/{accountId}/add/{amount}")
+    void addBalance(@PathVariable Integer accountId, @PathVariable Double amount);
+
+
 }

@@ -62,6 +62,28 @@ public class TransactionService {
 
     }
 
+    public Transaction createTransactionLoan(Integer receiverAccountId, Double amount, String description) {
+
+        AccountDto receiverAccount = accountServiceClient.getAccountById(receiverAccountId);
+
+        if (receiverAccount == null) {
+            throw new AccountNotFoundException("Receiver account not found with ID: " + receiverAccountId);
+        }
+
+        accountServiceClient.addBalance(receiverAccountId, amount);
+
+        Transaction transaction = new Transaction();
+        transaction.setSenderAccountId(0);
+        transaction.setReceiverAccountId(receiverAccountId);
+        transaction.setAmount(amount);
+        transaction.setDescription(description);
+        transaction.setDate(LocalDateTime.now());
+        transaction.setStatus(true);
+
+        return transactionRepository.save(transaction);
+
+    }
+
 
     public List<Transaction> getTransactionsByAccountId(Integer accountId) {
         List<Transaction> transactions = transactionRepository.findBySenderAccountIdOrReceiverAccountId(accountId, accountId);
@@ -87,6 +109,7 @@ public class TransactionService {
         }
         return transactions;
     }
+
 
 
 }

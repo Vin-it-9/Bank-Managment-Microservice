@@ -1,10 +1,7 @@
 package org.LoanService;
 
 import jakarta.transaction.Transactional;
-import org.LoanService.exception.AccountNotFoundException;
-import org.LoanService.exception.LoanNotFoundException;
-import org.LoanService.exception.UnauthorizedAccessException;
-import org.LoanService.exception.UserNotFoundException;
+import org.LoanService.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +13,19 @@ import java.util.Optional;
 @Transactional
 public class LoanService {
 
+    private static final Integer BANK_ACCOUNT_ID = 0;
+
     @Autowired
     LoanRepository loanRepository;
 
     @Autowired
-    private UserServiceClient userServiceClient;       // Feign client to fetch user details
+    private UserServiceClient userServiceClient;
 
     @Autowired
-    private AccountServiceClient accountServiceClient; // Feign client to fetch account details
+    private AccountServiceClient accountServiceClient;
+
+    @Autowired
+    private TransactionServiceClient transactionServiceClient;
 
 
     public Loan applyForLoan(Loan loan) {
@@ -67,7 +69,6 @@ public class LoanService {
             throw new UserNotFoundException("User not found with id: " + userId);
         }
 
-        // Retrieve loans for the user.
         List<Loan> loans = loanRepository.findByUserId(userId);
 
         if (loans == null || loans.isEmpty()) {
@@ -76,6 +77,38 @@ public class LoanService {
 
         return loans;
     }
+
+
+    public Loan approveLoan(Integer loanId) {
+        // Find the loan or throw an exception if not found
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new LoanNotFoundException("Loan not found with id: " + loanId));
+
+        // Proceed only if the loan is not already approved
+        if (loan.isApproved()) {
+            throw new IllegalStateException("Loan is already approved.");
+        }
+
+        // Build the transaction request for disbursing the loan amount
+        TransactionRequest transactionRequest = new TransactionRequest();
+        transactionRequest.setSenderAccountId(BANK_ACCOUNT_ID);
+        transactionRequest.setReceiverAccountId(loan.getAccountId());
+        transactionRequest.setAmount(loan.getAmount());
+        transactionRequest.setDescription("Disbursement for loan id " + loanId);
+
+        // Call the Transaction microservice via Feign client
+        TransactionResponse txResponse = transactionServiceClient.createTransaction(transactionRequest);
+
+        // Check if the transaction was successful. This assumes the response contains a status flag.
+        if (!txResponse.isStatus()) {
+            throw new RuntimeException("Transaction failed: " + txResponse.getMessage());
+        }
+
+        // Mark the loan as approved and persist the update
+        loan.setApproved(true);
+        return loanRepository.save(loan);
+    }
+
 
 
 

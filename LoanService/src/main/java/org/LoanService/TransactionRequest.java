@@ -1,4 +1,4 @@
-package org.transactionservice;
+package org.LoanService;
 
 public class TransactionRequest {
 

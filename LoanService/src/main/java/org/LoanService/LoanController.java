@@ -1,6 +1,7 @@
 package org.LoanService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,12 @@ public class LoanController {
     @GetMapping("/user/{id}")
     public List<Loan> getLoanByUserId(@PathVariable Integer id) {
         return loanService.getLoanByUserId(id);
+    }
+
+    @PutMapping("/approve/{loanId}")
+    public ResponseEntity<Loan> approveLoan(@PathVariable Integer loanId) {
+        Loan updatedLoan = loanService.approveLoan(loanId);
+        return ResponseEntity.ok(updatedLoan);
     }
 
 
