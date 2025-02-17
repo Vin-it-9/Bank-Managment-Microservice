@@ -1,11 +1,7 @@
 package org.LoanService;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Service;
+
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -18,20 +14,34 @@ public class Loan {
 
     private Double amount;
 
-    private Integer AccountId;
+    private Integer accountId;
 
-    private Integer UserId;
+    private Integer userId;
 
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;
 
-    private Double InterestRate;
+    private Double interestRate;
 
     private boolean status;
 
-    private Double Duration;
+    private boolean approved;
 
+    private Double duration;
+
+    @PrePersist
+    public void prePersist(){
+        if(this.amount == null) this.amount = 0.0;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
 
     public Integer getId() {
         return id;
@@ -50,19 +60,19 @@ public class Loan {
     }
 
     public Integer getAccountId() {
-        return AccountId;
+        return accountId;
     }
 
     public void setAccountId(Integer accountId) {
-        AccountId = accountId;
+        this.accountId = accountId;
     }
 
     public Integer getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(Integer userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public LocalDateTime getStartDate() {
@@ -82,11 +92,11 @@ public class Loan {
     }
 
     public Double getInterestRate() {
-        return InterestRate;
+        return interestRate;
     }
 
     public void setInterestRate(Double interestRate) {
-        InterestRate = interestRate;
+        this.interestRate = interestRate;
     }
 
     public boolean isStatus() {
@@ -98,12 +108,10 @@ public class Loan {
     }
 
     public Double getDuration() {
-        return Duration;
+        return duration;
     }
 
     public void setDuration(Double duration) {
-        Duration = duration;
+        this.duration = duration;
     }
-
-
 }

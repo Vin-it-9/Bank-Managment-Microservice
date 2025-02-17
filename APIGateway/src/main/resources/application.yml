@@ -30,4 +30,4 @@ spring:
         - id: LoanService
           uri: lb://loanService
           predicates:
-            - Path=/Loan/**
+            - Path=/loan/**

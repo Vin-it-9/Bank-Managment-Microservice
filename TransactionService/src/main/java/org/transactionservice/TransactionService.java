@@ -32,6 +32,7 @@ public class TransactionService {
     public Transaction createTransaction(Integer senderAccountId, Integer receiverAccountId, Double amount, String description) {
 
         AccountDto senderAccount = accountServiceClient.getAccountById(senderAccountId);
+
         if (senderAccount == null) {
             throw new AccountNotFoundException("Sender account not found with ID: " + senderAccountId);
         }
@@ -71,7 +72,6 @@ public class TransactionService {
         return transactions;
     }
 
-    // Fetch only sent transactions
     public List<Transaction> getSentTransactionsByAccountId(Integer accountId) {
         List<Transaction> transactions = transactionRepository.findBySenderAccountId(accountId);
         if (transactions.isEmpty()) {
@@ -80,7 +80,6 @@ public class TransactionService {
         return transactions;
     }
 
-    // Fetch only received transactions
     public List<Transaction> getReceivedTransactionsByAccountId(Integer accountId) {
         List<Transaction> transactions = transactionRepository.findByReceiverAccountId(accountId);
         if (transactions.isEmpty()) {

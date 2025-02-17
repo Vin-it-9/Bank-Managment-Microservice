@@ -43,13 +43,9 @@ public class TransactionController {
         return transactionService.getSentTransactionsByAccountId(accountId);
     }
 
-    // Fetch received transactions
     @GetMapping("/{accountId}/received")
     public List<Transaction> getReceivedTransactions(@PathVariable Integer accountId) {
         return transactionService.getReceivedTransactionsByAccountId(accountId);
     }
-
-
-
 
 }

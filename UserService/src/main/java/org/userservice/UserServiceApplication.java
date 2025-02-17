@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableDiscoveryClient
 public class UserServiceApplication {
+    
     public static void main(String[] args) {
         SpringApplication.run(UserServiceApplication.class, args);
 
