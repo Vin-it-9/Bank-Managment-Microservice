@@ -105,9 +105,12 @@ public class LoanService {
     }
 
     public Double calculateAndUpdateRepaymentAmount(Integer loanId) {
-
         Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new LoanNotFoundException("Loan not found with id: " + loanId));
+
+        if (loan.isStatus()) {
+            throw new IllegalStateException("Loan repayment is already completed.");
+        }
 
         double totalRepayment = LoanCalculator.calculateTotalRepayment(loan);
 

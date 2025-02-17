@@ -20,8 +20,6 @@ public class Loan {
 
     private LocalDateTime startDate;
 
-    private LocalDateTime endDate;
-
     private Double interestRate;
 
     private boolean status;
@@ -95,13 +93,6 @@ public class Loan {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
 
     public Double getInterestRate() {
         return interestRate;

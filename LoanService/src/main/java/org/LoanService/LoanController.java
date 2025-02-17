@@ -37,10 +37,16 @@ public class LoanController {
     }
 
     @GetMapping("/{loanId}/repayment")
-    public ResponseEntity<Double> getRepaymentAmount(@PathVariable Integer loanId) {
-        Double repaymentAmount = loanService.calculateAndUpdateRepaymentAmount(loanId);
-        return ResponseEntity.ok(repaymentAmount);
+    public ResponseEntity<?> getRepaymentAmount(@PathVariable Integer loanId) {
+        try {
+            Double repaymentAmount = loanService.calculateAndUpdateRepaymentAmount(loanId);
+            return ResponseEntity.ok(repaymentAmount);
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.ok().body(ex.getMessage());
+        }
     }
+
+
 
 
 
