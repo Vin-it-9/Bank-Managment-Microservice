@@ -105,8 +105,13 @@ public class LoanService {
     }
 
     public Double calculateAndUpdateRepaymentAmount(Integer loanId) {
+
         Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new LoanNotFoundException("Loan not found with id: " + loanId));
+
+        if (!loan.isApproved()) {
+            throw new IllegalStateException("Loan is not approved yet. Repayment calculation cannot be processed.");
+        }
 
         if (loan.isStatus()) {
             throw new IllegalStateException("Loan repayment is already completed.");
@@ -118,27 +123,32 @@ public class LoanService {
         loanRepository.save(loan);
 
         return totalRepayment;
+
     }
+
 
     public String payLoanAmount(Integer loanId) {
 
         Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new LoanNotFoundException("Loan not found with id: " + loanId));
 
+        if (!loan.isApproved()) {
+            throw new IllegalStateException("Loan is not approved yet. Repayment cannot be processed.");
+        }
+
         if (loan.isStatus()) {
             throw new IllegalStateException("Loan is already paid.");
         }
 
         double repaymentAmount = LoanCalculator.calculateTotalRepayment(loan);
-
         loan.setRepaymentAmount(repaymentAmount);
 
         accountServiceClient.deductBalance(loan.getAccountId(), repaymentAmount);
+
         loan.setStatus(true);
         loanRepository.save(loan);
 
         return "Loan payment successful. Amount paid: " + repaymentAmount;
-
     }
 
 
