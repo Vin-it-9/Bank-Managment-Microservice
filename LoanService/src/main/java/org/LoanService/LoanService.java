@@ -80,31 +80,26 @@ public class LoanService {
 
 
     public Loan approveLoan(Integer loanId) {
-        // Find the loan or throw an exception if not found
+
         Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new LoanNotFoundException("Loan not found with id: " + loanId));
 
-        // Proceed only if the loan is not already approved
         if (loan.isApproved()) {
             throw new IllegalStateException("Loan is already approved.");
         }
 
-        // Build the transaction request for disbursing the loan amount
         TransactionRequest transactionRequest = new TransactionRequest();
         transactionRequest.setSenderAccountId(BANK_ACCOUNT_ID);
         transactionRequest.setReceiverAccountId(loan.getAccountId());
         transactionRequest.setAmount(loan.getAmount());
         transactionRequest.setDescription("Disbursement for loan id " + loanId);
 
-        // Call the Transaction microservice via Feign client
         TransactionResponse txResponse = transactionServiceClient.createTransaction(transactionRequest);
 
-        // Check if the transaction was successful. This assumes the response contains a status flag.
         if (!txResponse.isStatus()) {
             throw new RuntimeException("Transaction failed: " + txResponse.getMessage());
         }
 
-        // Mark the loan as approved and persist the update
         loan.setApproved(true);
         return loanRepository.save(loan);
     }

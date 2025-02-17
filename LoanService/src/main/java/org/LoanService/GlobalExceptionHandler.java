@@ -29,7 +29,6 @@ public class GlobalExceptionHandler {
     }
 
 
-    // Handle UserNotFoundException
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleUserNotFoundException(
             UserNotFoundException ex, HttpServletRequest request) {
@@ -42,7 +41,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    // Handle AccountNotFoundException
     @ExceptionHandler(AccountNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleAccountNotFoundException(
             AccountNotFoundException ex, HttpServletRequest request) {
@@ -55,7 +53,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    // Handle UnauthorizedAccessException
     @ExceptionHandler(UnauthorizedAccessException.class)
     public ResponseEntity<Map<String, Object>> handleUnauthorizedAccessException(
             UnauthorizedAccessException ex, HttpServletRequest request) {
@@ -68,7 +65,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
-    // Handle all other exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneralException(
             Exception ex, HttpServletRequest request) {
