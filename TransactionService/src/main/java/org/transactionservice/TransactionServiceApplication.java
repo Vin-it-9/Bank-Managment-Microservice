@@ -2,8 +2,10 @@ package org.transactionservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
+@EnableFeignClients(basePackages = "org.transactionservice")
 public class TransactionServiceApplication {
 
     public static void main(String[] args) {

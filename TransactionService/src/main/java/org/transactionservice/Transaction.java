@@ -1,9 +1,6 @@
 package org.transactionservice;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +22,11 @@ public class Transaction {
     private Integer senderAccountId;
 
     private Integer receiverAccountId;
+
+    @PrePersist
+    protected void onCreate() {
+        this.date = LocalDateTime.now();
+    }
 
 
     public Integer getId() {

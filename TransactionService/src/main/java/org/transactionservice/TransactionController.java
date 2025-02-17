@@ -1,12 +1,39 @@
 package org.transactionservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/Transaction")
+import java.util.List;
+
+@RestController
+@RequestMapping("/transaction")
 public class TransactionController {
 
     @Autowired
     TransactionService transactionService;
+
+    @GetMapping("/{id}")
+    public Transaction getTransaction(@PathVariable Integer id) {
+        return transactionService.getTransaction(id);
+    }
+
+    @GetMapping("/")
+    public List<Transaction> getAllTransactions() {
+        return transactionService.getAllTransactions();
+    }
+
+
+    @PostMapping("/send")
+    public Transaction createTransaction(@RequestBody TransactionRequest request) {
+        return transactionService.createTransaction(
+                request.getSenderAccountId(),
+                request.getReceiverAccountId(),
+                request.getAmount(),
+                request.getDescription()
+        );
+    }
+
+
+
 
 }

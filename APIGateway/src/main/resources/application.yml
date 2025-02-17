@@ -25,9 +25,9 @@ spring:
         - id: TransactionService
           uri: lb://TransactionService
           predicates:
-            - Path=/Transaction/**
+            - Path=/transaction/**
 
         - id: LoanService
-          uri: lb://LoanService
+          uri: lb://loanService
           predicates:
             - Path=/Loan/**

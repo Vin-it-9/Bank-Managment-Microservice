@@ -30,6 +30,8 @@ public class GlobalExceptionHandler {
     }
 
 
+
+
     @ExceptionHandler(UnauthorizedAccessException.class)
     public ResponseEntity<Map<String, Object>> handleUnauthorizedAccessException(
             UnauthorizedAccessException ex, HttpServletRequest request) {
