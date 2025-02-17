@@ -33,6 +33,11 @@ public class TransactionController {
         );
     }
 
+    @GetMapping("/account/{accountId}")
+    public List<Transaction> getTransactionsByAccountId(@PathVariable Integer accountId) {
+        return transactionService.getTransactionsByAccountId(accountId);
+    }
+
 
 
 

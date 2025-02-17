@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.transactionservice.exception.AccountNotFoundException;
 import org.transactionservice.exception.InsufficientBalanceException;
+import org.transactionservice.exception.TransactionNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -53,6 +54,17 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getLocalizedMessage());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.status()));
+    }
+
+    @ExceptionHandler(TransactionNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleTransactionNotFound(TransactionNotFoundException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", "Transaction Not Found");
+        response.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
 

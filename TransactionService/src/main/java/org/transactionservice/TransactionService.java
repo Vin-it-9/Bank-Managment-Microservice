@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.transactionservice.exception.AccountNotFoundException;
 import org.transactionservice.exception.InsufficientBalanceException;
+import org.transactionservice.exception.TransactionNotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,13 +45,10 @@ public class TransactionService {
             throw new InsufficientBalanceException("Insufficient balance in sender's account");
         }
 
-        // Deduct balance from sender
         accountServiceClient.deductBalance(senderAccountId, amount);
 
-        // Add balance to receiver
         accountServiceClient.addBalance(receiverAccountId, amount);
 
-        // Create and save transaction
         Transaction transaction = new Transaction();
         transaction.setSenderAccountId(senderAccountId);
         transaction.setReceiverAccountId(receiverAccountId);
@@ -61,6 +59,19 @@ public class TransactionService {
 
         return transactionRepository.save(transaction);
 
+    }
+
+//    public List<Transaction> getTransactionsBySenderAccountId(Integer senderAccountId) {
+//        return transactionRepository
+//    }
+
+    public List<Transaction> getTransactionsByAccountId(Integer accountId) {
+        List<Transaction> transactions = transactionRepository.findBySenderAccountIdOrReceiverAccountId(accountId, accountId);
+
+        if (transactions.isEmpty()) {
+            throw new TransactionNotFoundException("No transactions found for account ID: " + accountId);
+        }
+        return transactions;
     }
 
 

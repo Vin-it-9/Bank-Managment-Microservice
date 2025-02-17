@@ -22,6 +22,16 @@ public class Account {
 
     private Integer userId;
 
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @PrePersist
     protected void onCreate() {
         this.createdDate = LocalDateTime.now();

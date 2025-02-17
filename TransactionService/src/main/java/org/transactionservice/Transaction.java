@@ -17,7 +17,7 @@ public class Transaction {
 
     private boolean status;
 
-    private double amount;
+    private Double amount;
 
     private Integer senderAccountId;
 
@@ -26,6 +26,9 @@ public class Transaction {
     @PrePersist
     protected void onCreate() {
         this.date = LocalDateTime.now();
+        if (this.amount == null) {
+            this.amount = 0.0;
+        }
     }
 
 
