@@ -9,6 +9,7 @@ spring:
       discovery:
         locator:
           enabled: true
+          lower-case-service-id: true
       routes:
 
         - id: UserService
@@ -19,7 +20,7 @@ spring:
         - id: AccountService
           uri: lb://AccountService
           predicates:
-            - Path=/Account/**
+            - Path=/account/**
 
         - id: TransactionService
           uri: lb://TransactionService

@@ -1,9 +1,6 @@
 package org.accountservice;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +11,8 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer AccountNumber;
+    @Column(unique = true, nullable = false)
+    private String accountNumber;
 
     private Double balance;
 
@@ -22,7 +20,13 @@ public class Account {
 
     private boolean status;
 
-    private Integer UserId;
+    private Integer userId;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
+    }
+
 
 
     public Account() {
@@ -37,12 +41,12 @@ public class Account {
         this.id = id;
     }
 
-    public Integer getAccountNumber() {
-        return AccountNumber;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setAccountNumber(Integer accountNumber) {
-        AccountNumber = accountNumber;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public Double getBalance() {
@@ -70,10 +74,10 @@ public class Account {
     }
 
     public Integer getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(Integer userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 }
