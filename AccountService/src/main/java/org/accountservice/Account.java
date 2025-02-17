@@ -25,7 +25,12 @@ public class Account {
     @PrePersist
     protected void onCreate() {
         this.createdDate = LocalDateTime.now();
+        if (this.balance == null) {
+            this.balance = 0.0;
+        }
     }
+
+
 
 
 
