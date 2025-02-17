@@ -120,9 +120,26 @@ public class LoanService {
         return totalRepayment;
     }
 
+    public String payLoanAmount(Integer loanId) {
 
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new LoanNotFoundException("Loan not found with id: " + loanId));
 
+        if (loan.isStatus()) {
+            throw new IllegalStateException("Loan is already paid.");
+        }
 
+        double repaymentAmount = LoanCalculator.calculateTotalRepayment(loan);
+
+        loan.setRepaymentAmount(repaymentAmount);
+
+        accountServiceClient.deductBalance(loan.getAccountId(), repaymentAmount);
+        loan.setStatus(true);
+        loanRepository.save(loan);
+
+        return "Loan payment successful. Amount paid: " + repaymentAmount;
+
+    }
 
 
 }

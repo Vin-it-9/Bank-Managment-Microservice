@@ -46,6 +46,15 @@ public class LoanController {
         }
     }
 
+    @PutMapping("/{loanId}/pay")
+    public ResponseEntity<?> payLoan(@PathVariable Integer loanId) {
+        try {
+            String result = loanService.payLoanAmount(loanId);
+            return ResponseEntity.ok(result);
+        } catch ( RuntimeException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
 
 
 
